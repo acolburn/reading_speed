@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'buttons.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -34,69 +35,84 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Find Your Reading Speed'),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark().copyWith(
+        primaryColor: Color(0xFF0A0E21),
+        scaffoldBackgroundColor: Color(0xFF0A0E21),
       ),
-      body: _buildBody(),
+      home: Scaffold(
+        resizeToAvoidBottomInset:
+            false, //keyboard slides over UI without resizing UI
+        appBar: AppBar(
+          title: Text('FIND YOUR READING SPEED'),
+        ),
+        body: _buildBody(),
+      ),
     );
   } //end build
 
   Widget _buildBody() {
-    return Column(
+//    return Column(
+//      mainAxisAlignment: MainAxisAlignment.start,
+//      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return ListView(
       children: <Widget>[
-        SizedBox(
-          height: 10,
-        ),
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              MaterialButton(
-//              height: 180,
-//              minWidth: 100,
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-                splashColor: Theme.of(context).accentColor,
-                onPressed: _startStopButtonPressed,
-                child: Text(_buttonText),
-              ),
-              MaterialButton(
-//              height: 180,
-//              minWidth: 100,
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-                splashColor: Theme.of(context).accentColor,
-                onPressed: _resetButtonPressed,
-                child: Text("Reset"),
-              ),
-            ],
+        buildStopwatch(),
+        buildInputSection(),
+        buildReadingSpeedDisplay(),
+      ],
+    );
+  }
+
+  Container buildReadingSpeedDisplay() {
+    return Container(
+      margin: EdgeInsets.all(15.0),
+      decoration: BoxDecoration(
+        color: Color(0xFF1D1E33),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        children: <Widget>[
+          MyButton(
+            buttonText: "Find Reading Speed!",
+            onPress: _calculateReadingSpeed,
           ),
-        ),
-        Expanded(
-          child: FittedBox(
+          FittedBox(
             fit: BoxFit.fill,
             child: Text(
-              _stopwatchText,
-              style: TextStyle(fontSize: 56),
+              _readingSpeed.toString() + " wpm",
+//              style: TextStyle(fontSize: 56),
+              style: kNumberTextStyle,
             ),
           ),
-        ),
-        Expanded(
-          child: TextField(
+        ],
+      ),
+    );
+  }
+
+  Container buildInputSection() {
+    return Container(
+      margin: EdgeInsets.all(15.0),
+      decoration: BoxDecoration(
+        color: Color(0xFF1D1E33),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      padding: EdgeInsets.fromLTRB(10, 0, 10, 15),
+      child: Column(
+        children: <Widget>[
+          TextField(
               decoration: InputDecoration(
-                labelText: "Enter total words for 5 lines",
+                labelText: "Total words for 5 lines",
               ),
 //                labelStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, height: 3)),
               keyboardType: TextInputType.number,
               onSubmitted: (String value) {
                 _txtTotalWords = value;
               }),
-        ),
-        Expanded(
-          child: TextField(
+          TextField(
             decoration: InputDecoration(
-              labelText: "Enter lines per page",
+              labelText: "Lines per page",
             ),
 //              labelStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, height: 3)),
             keyboardType: TextInputType.number,
@@ -104,11 +120,9 @@ class _HomeWidgetState extends State<HomeWidget> {
               _txtLinesPerPage = value;
             },
           ),
-        ),
-        Expanded(
-          child: TextField(
+          TextField(
             decoration: InputDecoration(
-              labelText: "Enter number of pages read",
+              labelText: "No of pages read",
             ),
 //              labelStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, height: 3)),
             keyboardType: TextInputType.number,
@@ -116,29 +130,40 @@ class _HomeWidgetState extends State<HomeWidget> {
               _txtPages = value;
             },
           ),
-        ),
-        Expanded(
-          child: MaterialButton(
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            splashColor: Theme.of(context).accentColor,
-            onPressed: _calculateReadingSpeed,
-            child: Text("Find Reading Speed!"),
+        ],
+      ),
+    );
+  }
+
+  Container buildStopwatch() {
+    return Container(
+      margin: EdgeInsets.all(15.0),
+      decoration: BoxDecoration(
+        color: Color(0xFF1D1E33),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              MyButton(
+                  buttonText: _buttonText, onPress: _startStopButtonPressed),
+              MyButton(buttonText: "Reset", onPress: _resetButtonPressed),
+            ],
           ),
-        ),
-        Expanded(
-          flex: 2,
-          child: FittedBox(
+          FittedBox(
             fit: BoxFit.fill,
             child: Text(
-              _readingSpeed.toString() + " wpm",
-              style: TextStyle(fontSize: 56),
+              _stopwatchText,
+//              style: TextStyle(fontSize: 56),
+              style: kNumberTextStyle,
             ),
           ),
-        ),
-      ],
+        ], //Row children
+      ),
     );
-  } //end _buildBody
+  } //end buildStopwatch
 
   void _startStopButtonPressed() {
     setState(() {
