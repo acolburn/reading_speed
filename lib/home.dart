@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'buttons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -19,6 +20,27 @@ class _HomeWidgetState extends State<HomeWidget> {
   String _txtPages = "1";
   final _stopWatch = Stopwatch();
   final _timeout = const Duration(seconds: 1);
+  TextEditingController _totalWordsController;
+  TextEditingController _linesPerPageController;
+  TextEditingController _pagesController;
+
+  @override
+  void initState() {
+    super.initState();
+    _populateFields();
+  }
+
+  Future<void> _populateFields() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _txtTotalWords = prefs.getString('totalWords') ?? '0';
+      _txtLinesPerPage = prefs.getString('linesPerPage') ?? '0';
+      _txtPages = prefs.getString('pages') ?? '1';
+    });
+    _totalWordsController = TextEditingController(text: _txtTotalWords);
+    _linesPerPageController = TextEditingController(text: _txtLinesPerPage);
+    _pagesController = TextEditingController(text: _txtPages);
+  }
 
   void _startTimeout() {
     Timer(_timeout, _handleTimeout);
@@ -102,32 +124,41 @@ class _HomeWidgetState extends State<HomeWidget> {
       child: Column(
         children: <Widget>[
           TextField(
+              controller: _totalWordsController,
               decoration: InputDecoration(
                 labelText: "Total words for 5 lines",
               ),
 //                labelStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, height: 3)),
               keyboardType: TextInputType.number,
-              onSubmitted: (String value) {
+              onSubmitted: (String value) async {
                 _txtTotalWords = value;
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString('totalWords', value);
               }),
           TextField(
+            controller: _linesPerPageController,
             decoration: InputDecoration(
               labelText: "Lines per page",
             ),
 //              labelStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, height: 3)),
             keyboardType: TextInputType.number,
-            onSubmitted: (String value) {
+            onSubmitted: (String value) async {
               _txtLinesPerPage = value;
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setString('linesPerPage', value);
             },
           ),
           TextField(
+            controller: _pagesController,
             decoration: InputDecoration(
               labelText: "No of pages read",
             ),
 //              labelStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, height: 3)),
             keyboardType: TextInputType.number,
-            onSubmitted: (String value) {
+            onSubmitted: (String value) async {
               _txtPages = value;
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setString('pages', value);
             },
           ),
         ],
