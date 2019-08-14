@@ -1,5 +1,3 @@
-//Stopwatch help from https://tinyurl.com/y6bkyf6u
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'buttons.dart';
@@ -14,7 +12,6 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget> {
   String _buttonText = "Start";
   String _stopwatchText = "00:00:00";
-//  String _stopwatchInSecondsText = "0";
   int _readingSpeed = 0;
   String _txtTotalWords = "0";
   String _txtLinesPerPage = "0";
@@ -29,7 +26,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   void initState() {
     super.initState();
     _populateFields();
-    ScreenKeepOn.turnOn(true);
+    ScreenKeepOn.turnOn(true); //stopwatch stops when screen turns off
   }
 
   Future<void> _populateFields() async {
@@ -76,10 +73,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   } //end build
 
-  Widget _buildBody() {
-//    return Column(
-//      mainAxisAlignment: MainAxisAlignment.start,
-//      crossAxisAlignment: CrossAxisAlignment.stretch,
+  Widget _buildBody() {,
     return ListView(
       children: <Widget>[
         buildStopwatch(),
@@ -106,7 +100,6 @@ class _HomeWidgetState extends State<HomeWidget> {
             fit: BoxFit.fill,
             child: Text(
               _readingSpeed.toString() + " wpm",
-//              style: TextStyle(fontSize: 56),
               style: kNumberTextStyle,
             ),
           ),
@@ -130,7 +123,6 @@ class _HomeWidgetState extends State<HomeWidget> {
               decoration: InputDecoration(
                 labelText: "Total words for 5 lines",
               ),
-//                labelStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, height: 3)),
               keyboardType: TextInputType.number,
               onSubmitted: (String value) async {
                 _txtTotalWords = value;
@@ -142,7 +134,6 @@ class _HomeWidgetState extends State<HomeWidget> {
             decoration: InputDecoration(
               labelText: "Lines per page",
             ),
-//              labelStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, height: 3)),
             keyboardType: TextInputType.number,
             onSubmitted: (String value) async {
               _txtLinesPerPage = value;
@@ -155,7 +146,6 @@ class _HomeWidgetState extends State<HomeWidget> {
             decoration: InputDecoration(
               labelText: "No of pages read",
             ),
-//              labelStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, height: 3)),
             keyboardType: TextInputType.number,
             onSubmitted: (String value) async {
               _txtPages = value;
@@ -189,7 +179,6 @@ class _HomeWidgetState extends State<HomeWidget> {
             fit: BoxFit.fill,
             child: Text(
               _stopwatchText,
-//              style: TextStyle(fontSize: 56),
               style: kNumberTextStyle,
             ),
           ),
@@ -230,8 +219,6 @@ class _HomeWidgetState extends State<HomeWidget> {
         (_stopWatch.elapsed.inMinutes % 60).toString().padLeft(2, "0") +
         ":" +
         (_stopWatch.elapsed.inSeconds % 60).toString().padLeft(2, "0");
-//    _stopwatchInSecondsText =
-//        _stopWatch.elapsed.inSeconds.toString() + " seconds";
   } //end _setStopwatchText
 
   void _calculateReadingSpeed() {

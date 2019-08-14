@@ -1,16 +1,15 @@
-# reading_speed
+# My Reading Speed
 
-A new Flutter application.
+#### NOTES:
 
-## Getting Started
+- `I` coded the stopwatch feature with help from https://tinyurl.com/y6bkyf6u
 
-This project is a starting point for a Flutter application.
+- shared_preferences used to persist settings. See
+  `Future<void> _populateFields() async {}`
 
-A few resources to get you started if this is your first Flutter project:
+- ```dart
+  home: Scaffold(  resizeToAvoidBottomInset:false, //keyboard slides over UI without resizing UI
+  ```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- UI is a `ListView` so everything fits inside a scrollable screen. 
+- Used `TextEditingConroller` widgets to set and get values in `TextFields`.
