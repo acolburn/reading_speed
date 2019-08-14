@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'buttons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:screen_keep_on/screen_keep_on.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -28,6 +29,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   void initState() {
     super.initState();
     _populateFields();
+    ScreenKeepOn.turnOn(true);
   }
 
   Future<void> _populateFields() async {
