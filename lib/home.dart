@@ -73,7 +73,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   } //end build
 
-  Widget _buildBody() {,
+  Widget _buildBody() {
     return ListView(
       children: <Widget>[
         buildStopwatch(),
